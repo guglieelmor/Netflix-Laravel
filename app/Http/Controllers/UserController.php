@@ -60,6 +60,7 @@ class UserController extends BaseController
         return redirect()->route('browse');
     }
 
+
     public function logout()
     {
         Auth::logout();

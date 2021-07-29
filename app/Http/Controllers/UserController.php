@@ -49,10 +49,43 @@ class UserController extends BaseController
             return redirect()->back()->withInput()->withErrors(['Senhas diferentes.']);
         }
 
+        if(empty($request->file('img'))){
+            return redirect()->back()->withInput()->withErrors(['Escolha uma imagem.']);
+        }
+
+        $request->validate([
+            'img' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        $imageName = time().'.'.$request->img->extension();
+
+        $request->img->move(public_path('users'), $imageName);
+
+        $go = back()
+            ->with('success','You have successfully upload image.')
+            ->with('image',$imageName);
+
+        if(empty($request->number)){
+            return redirect()->back()->withInput()->withErrors(['Insira um telefone de contato.']);
+        }
+
+        if(empty($request->cartao)){
+            return redirect()->back()->withInput()->withErrors(['Insira um cartão de crédito.']);
+        }
+
+        if(empty($request->plano)){
+            return redirect()->back()->withInput()->withErrors(['Insira um plano.']);
+        }
+
         $user = new User();
         $user->password = Hash::make($request->password);
         $user->email = $request->email;
         $user->name = $request->name;
+        $user->file = $imageName;
+        $user->telefone = $request->number;
+        $user->cartao = $request->cartao;
+        $user->metodo = $request->metodo;
+        $user->plano = $request->plano;
         $user->save();
 
         Auth::attempt(['email' => $request->email, 'password' => $request->password]);
@@ -60,10 +93,12 @@ class UserController extends BaseController
         return redirect()->route('browse');
     }
 
-
     public function logout()
     {
+        User::query()->where('email', '=', Auth::user()->email)->update(['logout' => date("Y-m-d H:i:s")]);
+
         Auth::logout();
+
         return redirect()->route('login');
     }
 }

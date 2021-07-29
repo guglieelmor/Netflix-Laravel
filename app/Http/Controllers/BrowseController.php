@@ -12,8 +12,6 @@ class BrowseController extends BaseController
 {
     public function construct()
     {
-        View::share('user', Auth::user());
-
         return view('browse');
     }
 

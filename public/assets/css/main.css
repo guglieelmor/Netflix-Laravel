@@ -238,6 +238,15 @@ button:focus {
     border-radius: 3px;
 }
 
+.in-radio{
+    border: solid 1px #848484 !important;
+    background-color: white;
+    border-radius: 5px;
+    color: #2d3748;
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
 .rememberMe{
     font-size: 13px;
 

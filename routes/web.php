@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/br', function () {
@@ -29,5 +31,8 @@ Route::post('/br/signup/register', 'App\Http\Controllers\UserController@register
 Route::get('/browse', 'App\Http\Controllers\BrowseController@construct')->name('browse')->middleware('auth');
 
 Route::get('/YourAccount', function () {
+    Log::channel('netflix')->info('Configurações da conta', ['user' => Auth::user()->name, 'time' => date('d:m:s d/m/Y')]);
     return view('youraccount');
 })->name('account')->middleware('auth');
+
+

@@ -38,13 +38,13 @@
 
             <form action="{{ route('login') }}" id="loginForm" class="d-flex direction-column" method="post" name="loginForm">
                 @csrf
-                <input type="text" name="email" id="email" class="email" placeholder="Email ou número de telefone" onchange="validateEmail()" required/>
+                <input type="text" name="email" id="email" class="email {{isset($error) ? 'required' : ''}}" placeholder="Email ou número de telefone" value="{{old('email')}}" onchange="validateEmail()"/>
                 <p id="errorEmail">Email</p>
 
-                <input type="password" name="password" id="password" placeholder="Senha" required/>
+                <input type="password" name="password" id="password" class="{{isset($error) ? 'required' : ''}}" placeholder="Senha" />
                 <p id="errorPassword">Your password must contain between 4 and 60 characters.</p>
 
-                <button type="submit" class="button submitButton" id="signInButton" disabled="disabled">
+                <button type="submit" class="button submitButton" id="signInButton" >
                     Entrar
                 </button>
                 <div class="rememberMe">

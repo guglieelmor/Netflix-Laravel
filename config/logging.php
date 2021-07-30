@@ -100,6 +100,12 @@ return [
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
         ],
+
+        'netflix' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/netflix.log'),
+            'level' => env('LOG_LEVEL', 'debug')
+        ],
     ],
 
 ];

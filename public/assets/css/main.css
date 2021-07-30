@@ -229,6 +229,15 @@ button:focus {
     outline: none;
 }
 
+.required{
+    background-color: #d06b6b;
+}
+
+.required::placeholder{
+    color: #ffffff;
+}
+
+
 .loginContainer{
     max-width: 320px;
     margin: auto;

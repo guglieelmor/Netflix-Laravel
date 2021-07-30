@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserRequest;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -10,6 +11,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends BaseController
 {
@@ -18,17 +20,20 @@ class UserController extends BaseController
     public function view()
     {
         if (Auth::check() === true){
+
             return redirect()->route('browse');
         }
 
         return view('login.login');
     }
 
-    public function loging(Request $request)
+    public function loging(UserRequest $request)
     {
         Auth::attempt(['email' => $request->email, 'password' => $request->password]);
 
         if (Auth::check() === true){
+            Log::channel('netflix')->info('Logado', ['user' => Auth::user()->name, 'time' => date('d:m:s d/m/Y')]);
+
             return redirect()->route('browse');
         }
 
@@ -90,12 +95,16 @@ class UserController extends BaseController
 
         Auth::attempt(['email' => $request->email, 'password' => $request->password]);
 
+        Log::channel('netflix')->info('Cadastrado', ['user' => Auth::user()->name, 'time' => date('d:m:s d/m/Y')]);
+
         return redirect()->route('browse');
     }
 
     public function logout()
     {
         User::query()->where('email', '=', Auth::user()->email)->update(['logout' => date("Y-m-d H:i:s")]);
+
+        Log::channel('netflix')->info('Logout', ['user' => Auth::user()->name, 'time' => date('d:m:s d/m/Y')]);
 
         Auth::logout();
 
